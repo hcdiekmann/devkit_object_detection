@@ -3,26 +3,56 @@ A ROS 2 wrapper for inference with [YOLOv5](https://github.com/ultralytics/yolov
 
 > This package is optimised and tested with the intel [Realsense D435i](https://www.intelrealsense.com/depth-camera-d435i/) camera
 
-### Pretrained detection model
-[COCO dataset](https://cocodataset.org/#home) lables for 80 classes of common objects in context
+## Setup Instructions
+
+### Step 1: Install the ROS2 distribution
+ - #### Ubuntu 22.04:
+   - [ROS2 Humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html)
+ - #### Ubuntu 20.04: 
+   - [ROS2 Foxy](https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html)
+   - [ROS2 Galactic](https://docs.ros.org/en/galactic/Installation/Ubuntu-Install-Debians.html)
+
+### Step 2: Install the ROS2 Wrapper for Intel® RealSense™
+- #### [Intel® RealSense™ SDK 2.0](https://github.com/IntelRealSense/realsense-ros)
+
+___
 
 ## Install
-
+- #### Clone this package into your ROS 2 workspace src folder
 ```bash
-cd /ros2_ws/src 
+cd ~/ros2_ws/src 
 git clone https://github.com/hcdiekmann/devkit_object_detection.git
+```
+- #### install python dependencies
+```bash
 pip install -r requirements.txt
-cd ros2_ws
+```
+- #### build the package and source the installtion
+```
+cd ~/ros2_ws
 colcon build 
+. install/setup.bash
 ```
 
 ## Run
+- #### Start the RealSense™ camera node
 
-
-
-``` bash
+```bash
+ros2 launch realsense2_camera rs_launch.py align_depth.enable:=true depth_module.profile:=848x480x30 pointcloud.enable:=true rgb_camera.profile:=848x480x30 
+```
+- #### Start the detection node
+```
 ros2 run devkit_object_detection detection_node
 ```
+
+
+
+## Example
+### Pretrained detection model
+[COCO dataset](https://cocodataset.org/#home) lables for 80 classes of common objects in context
+
+![Result](https://user-images.githubusercontent.com/13176191/212470835-74a13c59-f2f8-48be-8b2e-744d1382ea48.png)
+
 
 
 ## Build with Docker
