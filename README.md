@@ -28,7 +28,7 @@ git clone https://github.com/hcdiekmann/devkit_object_detection.git
 pip install -r requirements.txt
 ```
 - #### build the package and source the installtion
-```
+```bash
 cd ~/ros2_ws
 colcon build 
 . install/setup.bash
@@ -41,7 +41,7 @@ colcon build
 ros2 launch realsense2_camera rs_launch.py align_depth.enable:=true depth_module.profile:=848x480x30 pointcloud.enable:=true rgb_camera.profile:=848x480x30 
 ```
 - #### Start the detection node
-```
+```bash
 ros2 run devkit_object_detection detection_node
 ```
 
