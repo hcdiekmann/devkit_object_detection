@@ -1,7 +1,7 @@
 # ROS 2 Object Detection 
 A ROS 2 wrapper for inference with [YOLOv5](https://github.com/ultralytics/yolov5#readme) (and soon [YOLOv8](https://github.com/ultralytics/ultralytics#readme)) designed for the [UP AMR development kit](https://github.com/AAEONAEU-SW/uprobotic-devkits)
 
-> This package is optimised and tested with the intel [Realsense D435i](https://www.intelrealsense.com/depth-camera-d435i/) camera
+> This package is optimised and tested with the Intel® [RealSense™ D435i](https://www.intelrealsense.com/depth-camera-d435i/) camera
 
 ## Setup Instructions
 
