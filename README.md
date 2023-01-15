@@ -1,7 +1,7 @@
 # ROS 2 Object Detection 
 A ROS 2 wrapper for inference with [YOLOv5](https://github.com/ultralytics/yolov5#readme) (soon [YOLOv8](https://github.com/ultralytics/ultralytics#readme)) designed for the [UP AMR development kit](https://github.com/AAEONAEU-SW/uprobotic-devkits)
 
-> This package is optimised and tested with the Intel® [RealSense™ D435i](https://www.intelrealsense.com/depth-camera-d435i/) camera
+> This package is optimised and tested with Intel® [RealSense™](https://www.intelrealsense.com/) cameras
 
 ## Setup Instructions
 
@@ -36,9 +36,11 @@ colcon build
 
 ## **Run**
 - #### Start the RealSense™ camera node
+#### Set the image size for all lenses 
+eg. 640x480 signifcantlly improves the inference time
 
 ```bash
-ros2 launch realsense2_camera rs_launch.py align_depth.enable:=true depth_module.profile:=848x480x30 pointcloud.enable:=true rgb_camera.profile:=848x480x30 
+ros2 launch realsense2_camera rs_launch.py align_depth.enable:=true depth_module.profile:=640x480x30 pointcloud.enable:=true rgb_camera.profile:=640x480x30 
 ```
 - #### Start the detection node
 ```bash
@@ -55,12 +57,12 @@ ros2 run devkit_object_detection detection_node
 
 ## Todo
 - [ ] Pointcloud object segmentation
-- [ ] TF to object clusters
+- [ ] Filter object clusters and publish tf
 
 
 
 ## **Docker**
-Build your [custom image](https://www.intel.com/content/www/us/en/develop/documentation/ei4amr-2022-3-developer-guide/top/tutorials-amr/build-docker-images-from-ei-for-amr.html) with the Dockerfile  for usage inside the [Edge Insight for AMR SDK](https://www.intel.com/content/www/us/en/developer/topic-technology/edge-5g/edge-solutions/autonomous-mobile-robots/overview.html) form intel&reg;
+Build a [custom image](https://www.intel.com/content/www/us/en/develop/documentation/ei4amr-2022-3-developer-guide/top/tutorials-amr/build-docker-images-from-ei-for-amr.html) with the Dockerfile  for usage inside the [Edge Insight for AMR SDK](https://www.intel.com/content/www/us/en/developer/topic-technology/edge-5g/edge-solutions/autonomous-mobile-robots/overview.html) form intel&reg;
 
 
 
