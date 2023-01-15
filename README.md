@@ -5,14 +5,14 @@ A ROS 2 wrapper for inference with [YOLOv5](https://github.com/ultralytics/yolov
 
 ## Setup Instructions
 
-### Step 1: Install a ROS2 distribution
+### Step 1: Install a ROS 2 distribution
  - #### Ubuntu 22.04:
    - [ROS 2 Humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html)
  - #### Ubuntu 20.04: 
    - [ROS 2 Foxy](https://docs.ros.org/en/foxy/Installation/Ubuntu-Install-Debians.html)
    - [ROS 2 Galactic](https://docs.ros.org/en/galactic/Installation/Ubuntu-Install-Debians.html)
 
-### Step 2: Install the ROS2 Wrapper Intel® RealSense™
+### Step 2: Install the Intel® RealSense™ ROS 2 Wrapper
 - #### [Intel® RealSense™ SDK 2.0](https://github.com/IntelRealSense/realsense-ros)
 
 ___
@@ -53,9 +53,9 @@ ros2 run devkit_object_detection detection_node
 
 ![Result](https://user-images.githubusercontent.com/13176191/212470835-74a13c59-f2f8-48be-8b2e-744d1382ea48.png)
 
-### Todo
+## Todo
 - [ ] Pointcloud object segmentation
-- [ ] TF to objects
+- [ ] TF to object clusters
 
 
 
