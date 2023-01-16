@@ -27,17 +27,21 @@ git clone https://github.com/hcdiekmann/devkit_object_detection.git
 ```bash
 pip install -r requirements.txt
 ```
-- #### build the package and source the installtion
+- #### install ROS 2 dependencies
 ```bash
 cd ~/ros2_ws
-colcon build 
+rosdep install --from-paths src -y  
+```
+- #### build the package and source the installtion
+```bash
+colcon build --packages-select devkit_object_detection
 . install/setup.bash
 ```
 
 ## **Run**
 - #### Start the RealSense™ camera node
-#### Set the image size for all lenses 
-eg. 640x480 signifcantlly improves the inference time
+> Set the image size with the launch argument 
+eg. 640x480 significantly improves the inference time
 
 ```bash
 ros2 launch realsense2_camera rs_launch.py align_depth.enable:=true depth_module.profile:=640x480x30 pointcloud.enable:=true rgb_camera.profile:=640x480x30 
@@ -58,6 +62,7 @@ ros2 run devkit_object_detection detection_node
 ## Todo
 - [ ] Pointcloud object segmentation
 - [ ] Filter object clusters and publish tf
+- [ ] Add launch file with inference and camera parameters
 
 
 
