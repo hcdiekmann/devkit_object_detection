@@ -31,12 +31,12 @@ class ObjectDetector(Node):
         self.depth_array = None
 
         # Load and configure YOLO model
-        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5s6')
-        self.model.iou = 0.45           # NMS IoU threshold (overlapping of boxes)
+        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5s6', force_reload=True)
+        self.model.iou = 0.45           # NMS IoU threshold
         self.model.conf = 0.40          # NMS confidence threshold
         self.model.multi_label = False  # NMS multiple labels per box
         self.model.classes = None       # (optional list) filter by class, i.e. = [0, 15, 16] for COCO persons, cats and dogs
-        self.model.max_det = 1000       # maximum number of detections per image
+        self.model.max_det = 100        # maximum number of detections per image
 
         # Create the camera subscribers, Note: The RealSense D405 model publishes rgb_image to /camera/color/image_rect_raw
         self.color_sub = self.create_subscription(Image,'/camera/color/image_raw', self.color_callback, 10) 
@@ -67,14 +67,14 @@ class ObjectDetector(Node):
 
 
     def detect(self):
-        results = self.model(self.color_frame)
+        results = self.model(self.color_frame, size=848)
         results.print() # prints inference metrics to terminal
         self.process_predictions(results)
         inference_image = np.squeeze(results.render()) # draws bounding boxes with labels and confidence on color frame
         self.inference_pub.publish(inference_image) # publish inference image to ros topic
-
         #cv2.imshow('Inference Image', inference_image )   
         #cv2.waitKey(1)
+
 
     def process_predictions(self, predictions):
         objects = predictions.pandas().xyxy[0].to_dict(orient = "records")
