@@ -52,6 +52,7 @@ class ObjectDetector(Node):
         """
         ros_image = br.imgmsg_to_cv2(data)
         self.color_frame = cv2.cvtColor(ros_image, cv2.COLOR_BGR2RGB)
+        self.detect()
          
 
     def depth_callback(self, data):
@@ -61,17 +62,16 @@ class ObjectDetector(Node):
         ros_depth_frame = br.imgmsg_to_cv2(data)
         self.depth_frame = cv2.applyColorMap(cv2.convertScaleAbs(ros_depth_frame, alpha=0.08), cv2.COLORMAP_JET)
         self.depth_array = np.array(ros_depth_frame, dtype=np.float64)
-        self.detect()
         #cv2.imshow('Colormap', self.depth_frame)
         #cv2.waitKey(1)
 
 
     def detect(self):
-        results = self.model(self.color_frame, size=848)
+        results = self.model(self.color_frame)
         results.print()                                     # prints inference metrics to terminal
         self.process_predictions(results)
-        inference_image = np.squeeze(results.render())      # draws bounding boxes with labels and confidence on color frame
-        ros_infer_image = br.cv2_to_imgmsg(inference_image)
+        inference_image = np.squeeze(results.render())      # draw bounding boxes, labels and confidence on source image
+        ros_infer_image = br.cv2_to_imgmsg(inference_image) # convert to ROS Image msg
         self.inference_pub.publish(ros_infer_image)         # publish inference image to ros topic
         #cv2.imshow('Inference Image', inference_image )   
         #cv2.waitKey(1)
