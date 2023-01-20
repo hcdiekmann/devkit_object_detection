@@ -68,10 +68,11 @@ class ObjectDetector(Node):
 
     def detect(self):
         results = self.model(self.color_frame, size=848)
-        results.print() # prints inference metrics to terminal
+        results.print()                                     # prints inference metrics to terminal
         self.process_predictions(results)
-        inference_image = np.squeeze(results.render()) # draws bounding boxes with labels and confidence on color frame
-        self.inference_pub.publish(inference_image) # publish inference image to ros topic
+        inference_image = np.squeeze(results.render())      # draws bounding boxes with labels and confidence on color frame
+        ros_infer_image = br.cv2_to_imgmsg(inference_image)
+        self.inference_pub.publish(ros_infer_image)         # publish inference image to ros topic
         #cv2.imshow('Inference Image', inference_image )   
         #cv2.waitKey(1)
 
