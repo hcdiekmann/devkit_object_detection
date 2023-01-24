@@ -29,13 +29,13 @@ class ObjectDetector(Node):
         self.color_frame = None
         self.depth_frame = None
         self.depth_array = None
-        self.detect_interval = 15
+        self.detect_interval = 10
         self.frame_count = 0
 
         # Load and configure YOLO model
-        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5s', force_reload=True)
+        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5s6', force_reload=True)
         self.model.iou = 0.45           # NMS IoU threshold
-        self.model.conf = 0.40          # NMS confidence threshold
+        self.model.conf = 0.50          # NMS confidence threshold
         self.model.multi_label = False  # NMS multiple labels per box
         self.model.classes = None       # (optional list) filter by class, i.e. = [0, 15, 16] for COCO persons, cats and dogs
         self.model.max_det = 100        # maximum number of detections per image
