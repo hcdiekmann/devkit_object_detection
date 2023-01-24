@@ -89,10 +89,11 @@ class ObjectDetector(Node):
                 x_center, y_center  = (x1 + x2)/2, (y1 + y2)/2
                 object_center = (int(x_center), int(y_center))
                 cv2.circle(self.color_frame, object_center, 3, (0,0,255),-1 ) # center point as red circle
-                 
-                # get distance to object center from depth array
-                distance = self.depth_array[object_center[1],object_center[0]]
-                cv2.putText(self.color_frame, "{}mm".format(distance),(object_center[0], object_center[1] - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 2, cv2.LINE_AA)
+
+                if self.depth_array is not None:
+                    # get distance to object center from depth array
+                    distance = self.depth_array[object_center[1],object_center[0]]
+                    cv2.putText(self.color_frame, "{}mm".format(distance),(object_center[0], object_center[1] - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 2, cv2.LINE_AA)
 
 
 
