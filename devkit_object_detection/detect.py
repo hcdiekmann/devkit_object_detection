@@ -37,7 +37,7 @@ class ObjectDetector(Node):
         self.model.iou = 0.45           # NMS IoU threshold
         self.model.conf = 0.50          # NMS confidence threshold
         self.model.multi_label = False  # NMS multiple labels per box
-        self.model.classes = None       # (optional list) filter by class, i.e. = [0, 15, 16] for COCO persons, cats and dogs
+        self.model.classes = [0, 1, 2]       # (optional list) filter by class, i.e. = [0, 15, 16] for COCO persons, cats and dogs
         self.model.max_det = 100        # maximum number of detections per image
 
         # Create the camera subscribers, Note: The RealSense D405 model publishes rgb_image to /camera/color/image_rect_raw
