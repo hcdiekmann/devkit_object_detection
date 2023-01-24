@@ -27,11 +27,10 @@ class ObjectDetector(Node):
         # Initiate the Node class's constructor and give node name
         super().__init__('object_detector')
         self.color_frame = None
-        self.depth_frame = None
         self.depth_array = None
 
         # Load and configure YOLO model
-        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5s6', force_reload=True)
+        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5s', force_reload=True)
         self.model.iou = 0.45           # NMS IoU threshold
         self.model.conf = 0.40          # NMS confidence threshold
         self.model.multi_label = False  # NMS multiple labels per box
@@ -60,8 +59,8 @@ class ObjectDetector(Node):
         Callback function for the depth frame.
         """
         ros_depth_frame = br.imgmsg_to_cv2(data)
-        self.depth_frame = cv2.applyColorMap(cv2.convertScaleAbs(ros_depth_frame, alpha=0.08), cv2.COLORMAP_JET)
         self.depth_array = np.array(ros_depth_frame, dtype=np.float64)
+        #depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(ros_depth_frame, alpha=0.08), cv2.COLORMAP_JET)
         #cv2.imshow('Colormap', self.depth_frame)
         #cv2.waitKey(1)
 
@@ -69,11 +68,11 @@ class ObjectDetector(Node):
     def detect(self):
         if self.color_frame is not None:
             results = self.model(self.color_frame)
-            results.print()                                     # prints inference metrics to terminal
             self.process_predictions(results)
             inference_image = np.squeeze(results.render())      # draw bounding boxes, labels and confidence on source image
             ros_infer_image = br.cv2_to_imgmsg(inference_image) # convert to ROS Image msg
             self.inference_pub.publish(ros_infer_image)         # publish inference image to ros topic
+            results.print()                                     # prints inference metrics to terminal
             #cv2.imshow('Inference Image', inference_image )   
             #cv2.waitKey(1)
 
