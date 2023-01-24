@@ -27,7 +27,10 @@ class ObjectDetector(Node):
         # Initiate the Node class's constructor and give node name
         super().__init__('object_detector')
         self.color_frame = None
+        self.depth_frame = None
         self.depth_array = None
+        self.detect_interval = 15
+        self.frame_count = 0
 
         # Load and configure YOLO model
         self.model = torch.hub.load('ultralytics/yolov5', 'yolov5s', force_reload=True)
@@ -49,17 +52,20 @@ class ObjectDetector(Node):
         """
         Callback function for the color frame.
         """
-        ros_image = br.imgmsg_to_cv2(data)
-        self.color_frame = cv2.cvtColor(ros_image, cv2.COLOR_BGR2RGB)
-        self.detect()
+        self.frame_count += 1
+        if self.frame_count == self.detect_interval:
+            self.frame_count = 0
+            ros_image = br.imgmsg_to_cv2(data)
+            self.color_frame = cv2.cvtColor(ros_image, cv2.COLOR_BGR2RGB)
+            self.depth_array = np.array(self.depth_frame, dtype=np.float64)
+            self.detect()
          
 
     def depth_callback(self, data):
         """
         Callback function for the depth frame.
         """
-        ros_depth_frame = br.imgmsg_to_cv2(data)
-        self.depth_array = np.array(ros_depth_frame, dtype=np.float64)
+        self.depth_frame = br.imgmsg_to_cv2(data)
         #depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(ros_depth_frame, alpha=0.08), cv2.COLORMAP_JET)
         #cv2.imshow('Colormap', self.depth_frame)
         #cv2.waitKey(1)
