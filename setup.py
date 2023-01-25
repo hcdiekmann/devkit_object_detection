@@ -16,11 +16,12 @@ setup(
     maintainer='Christian Diekmann',
     maintainer_email='ChristianDiekmann@aaeon.eu',
     description='YOLO object detection for the AMR development kit',
-    license='TODO: License declaration',
+    license='MIT',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-'detection_node = devkit_object_detection.detect:main'
+'detection_node = devkit_object_detection.obj_detection_node:main'
+'obj_tf_pub_node = devkit_object_detection.tf_publisher_node:main'
         ],
     },
 )
