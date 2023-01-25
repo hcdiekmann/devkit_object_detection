@@ -28,7 +28,7 @@ class ObjectDetector(Node):
         self.color_frame = None
         self.depth_frame = None
         self.depth_array = None
-        self.detect_interval = 10
+        self.DETECT_FRAME_INTERVAL = 10 # detection interval
         self.frame_count = 0
 
         # Load and configure YOLO model
@@ -52,11 +52,10 @@ class ObjectDetector(Node):
         Callback function for the color frame.
         """
         self.frame_count += 1
-        if self.frame_count == self.detect_interval:
+        if self.frame_count == self.DETECT_FRAME_INTERVAL:
             self.frame_count = 0
             ros_image = br.imgmsg_to_cv2(data)
             self.color_frame = cv2.cvtColor(ros_image, cv2.COLOR_BGR2RGB)
-            self.depth_array = np.array(self.depth_frame, dtype=np.float64)
             self.detect()
          
 
@@ -103,9 +102,9 @@ class ObjectDetector(Node):
                 obj_msg.center_pos.x = x_center
                 obj_msg.center_pos.y = y_center
 
-                if self.depth_array is not None:
-                    # get distance to object center from depth array
-                    distance = self.depth_array[object_center[1],object_center[0]]
+                if self.depth_frame is not None:
+                    self.depth_array = np.array(self.depth_frame, dtype=np.float64)
+                    distance = self.depth_array[object_center[1],object_center[0]] # get distance to object center from depth array
                     obj_msg.center_pos.z = distance
                     #cv2.putText(self.color_frame, "{}mm".format(distance),(object_center[0], object_center[1] - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 2, cv2.LINE_AA)
                 
