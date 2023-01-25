@@ -4,7 +4,7 @@ import time
 import rclpy                                                # Python client library for ROS 2
 from rclpy.node import Node                                 # Handles the creation of ROS nodes
 from sensor_msgs.msg import Image                           # Image is the ROS message type
-from msg import Object, Objects
+from devkit_object_detection.msg import Object, Objects
 
 from cv_bridge import CvBridge                              # Package to convert between ROS and OpenCV Images
 br = CvBridge()

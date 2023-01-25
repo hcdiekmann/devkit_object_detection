@@ -4,7 +4,7 @@ import tf2_ros
 import numpy as np
 from tf.transformations import euler_from_quaternion
 from geometry_msgs.msg import PoseStamped, TransformStamped, Quaternion
-from msg import Objects
+from devkit_object_detection.msg import Objects
 
 
 class ObjectTransformPublisher(Node):
