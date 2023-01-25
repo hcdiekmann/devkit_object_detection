@@ -5,12 +5,15 @@
   <version>0.0.0</version>
   <description>YOLO object detection for the AMR development kit</description>
   <maintainer email="ChristianDiekmann@aaeon.eu">Christian Diekmann</maintainer>
-  <license>TODO: License declaration</license>
+  <license>MIT</license>
   
   <depend>rclpy</depend>
   <depend>cv_bridge</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>msg</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
