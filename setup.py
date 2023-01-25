@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-'detection_node = devkit_object_detection.obj_detection_node:main'
+'detection_node = devkit_object_detection.obj_detection_node:main',
 'obj_tf_pub_node = devkit_object_detection.tf_publisher_node:main'
         ],
     },
