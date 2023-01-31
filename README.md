@@ -22,7 +22,7 @@ ___
 ```bash
 cd ~/ros2_ws/src 
 git clone https://github.com/hcdiekmann/devkit_object_detection.git
-git clone 
+git clone https://github.com/hcdiekmann/devkit_inference_interfaces.git
 ```
 - #### install python dependencies
 ```bash
