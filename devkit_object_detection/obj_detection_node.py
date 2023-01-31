@@ -4,7 +4,7 @@ import time
 import rclpy                                                # Python client library for ROS 2
 from rclpy.node import Node                                 # Handles the creation of ROS nodes
 from sensor_msgs.msg import Image                           # Image is the ROS message type
-from devkit_object_detection.msg import Object, Objects
+from devkit_inference_interfaces.msg import Object, Objects
 
 from cv_bridge import CvBridge                              # Package to convert between ROS and OpenCV Images
 br = CvBridge()
@@ -28,19 +28,19 @@ class ObjectDetector(Node):
         self.color_frame = None
         self.depth_frame = None
         self.depth_array = None
-        self.DETECT_FRAME_INTERVAL = 10 # detection interval
+        self.DETECT_FRAME_INTERVAL = 5 # detection interval
         self.frame_count = 0
 
         # Load and configure YOLO model
-        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5s6', force_reload=True)
+        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5s6')
         self.model.iou = 0.45           # NMS IoU threshold
         self.model.conf = 0.50          # NMS confidence threshold
         self.model.multi_label = False  # NMS multiple labels per box
-        self.model.classes = [0, 1, 2]  # (optional list) filter by class, i.e. = [0, 15, 16] for COCO persons, cats and dogs
+        self.model.classes = [2, 41]    # filter by class, i.e. = [0, 15, 16] for COCO persons, cats and dogs
         self.model.max_det = 50         # maximum number of detections per image
 
         # Create the camera subscribers, Note: The RealSense D405 model publishes rgb_image to /camera/color/image_rect_raw
-        self.color_sub = self.create_subscription(Image,'/camera/color/image_raw', self.color_callback, 10) 
+        self.color_sub = self.create_subscription(Image,'/camera/color/image_rect_raw', self.color_callback, 10) 
         self.depth_sub = self.create_subscription(Image,'/camera/aligned_depth_to_color/image_raw', self.depth_callback, 10)
         
         # Create publishers for the inference_image and object result msg
@@ -65,7 +65,7 @@ class ObjectDetector(Node):
         """
         self.depth_frame = br.imgmsg_to_cv2(data)
         #depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(ros_depth_frame, alpha=0.08), cv2.COLORMAP_JET)
-        #cv2.imshow('Colormap', self.depth_frame)
+        #cv2.imshow('Colormap', depth_colormap)
         #cv2.waitKey(1)
 
 
@@ -76,21 +76,22 @@ class ObjectDetector(Node):
             inference_image = np.squeeze(results.render())      # draw bounding boxes, labels and confidence on source image
             ros_infer_image = br.cv2_to_imgmsg(inference_image) # convert to ROS Image msg
             self.inference_pub.publish(ros_infer_image)         # publish inference image to ros topic
-            #results.print()                                     # prints inference metrics to terminal
-            #cv2.imshow('Inference Image', inference_image )   
-            #cv2.waitKey(1)
+            #results.print()                                    # prints inference metrics to terminal
+            cv2.imshow('Inference Image', inference_image )   
+            cv2.waitKey(1)
 
 
     def process_predictions(self, predictions):
-        objects = predictions.pandas().xyxy[0].to_dict(orient = "records")
-        object_list = []
         if len(predictions) != 0:
+            objects = predictions.pandas().xyxy[0].to_dict(orient = "records")
+            object_list = Objects()
+
             for obj in objects:
                 name,confi,x1,y1,x2,y2, = obj['name'],obj['confidence'],obj['xmin'],obj['ymin'],obj['xmax'],obj['ymax']
                 # calculate bounding box center
                 x_center, y_center  = (x1 + x2)/2, (y1 + y2)/2
                 object_center = (int(x_center), int(y_center))
-                #cv2.circle(self.color_frame, object_center, 3, (0,0,255),-1 ) # center point as red circle
+                cv2.circle(self.color_frame, object_center, 3, (0,0,255),-1 ) # center point as red circle
                 obj_msg = Object()
                 obj_msg.frame_id = "camera_depth_optical_frame"
                 obj_msg.lable = name
@@ -105,10 +106,10 @@ class ObjectDetector(Node):
                 if self.depth_frame is not None:
                     self.depth_array = np.array(self.depth_frame, dtype=np.float64)
                     distance = self.depth_array[object_center[1],object_center[0]] # get distance to object center from depth array
+                    cv2.putText(self.color_frame, "{}mm".format(distance),(object_center[0], object_center[1] - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 2, cv2.LINE_AA)
                     obj_msg.center_pos.z = distance
-                    #cv2.putText(self.color_frame, "{}mm".format(distance),(object_center[0], object_center[1] - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 2, cv2.LINE_AA)
-                
-                object_list.append(obj_msg)
+
+                object_list.objects.append(obj_msg)
         
         self.object_pub.publish(object_list)
 
