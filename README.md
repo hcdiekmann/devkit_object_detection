@@ -1,5 +1,5 @@
 # ROS 2 Object Detection 
-A ROS 2 wrapper for inference with [YOLOv5](https://github.com/ultralytics/yolov5#readme) (soon [YOLOv8](https://github.com/ultralytics/ultralytics#readme)) designed for the [UP AMR development kit](https://github.com/AAEONAEU-SW/uprobotic-devkits)
+A ROS 2 wrapper for inference with [YOLOv5](https://github.com/ultralytics/yolov5#readme) designed for the [UP AMR development kit](https://github.com/AAEONAEU-SW/uprobotic-devkits)
 
 > This package is optimised and tested with Intel® [RealSense™](https://www.intelrealsense.com/) cameras
 
@@ -18,23 +18,24 @@ A ROS 2 wrapper for inference with [YOLOv5](https://github.com/ultralytics/yolov
 ___
 
 ## **Install**
-- #### Clone this package into your ROS 2 workspace `src`  directory
+- #### Clone the packages into your ROS 2 workspace `src`  directory
 ```bash
 cd ~/ros2_ws/src 
 git clone https://github.com/hcdiekmann/devkit_object_detection.git
+git clone 
 ```
 - #### install python dependencies
 ```bash
-pip install -r requirements.txt
+pip install -r devkit_object_detection/requirements.txt
 ```
 - #### install ROS 2 dependencies
 ```bash
 cd ~/ros2_ws
-rosdep install --from-paths src -y  
+rosdep install --from-paths src -y --ignore-src -r
 ```
-- #### build the package and source the installtion
+- #### build the package and source the installation
 ```bash
-colcon build --packages-select devkit_object_detection
+colcon build
 . install/setup.bash
 ```
 
@@ -44,26 +45,28 @@ colcon build --packages-select devkit_object_detection
 eg. 640x480 significantly improves the inference time
 
 ```bash
-ros2 launch realsense2_camera rs_launch.py align_depth.enable:=true depth_module.profile:=640x480x30 pointcloud.enable:=true rgb_camera.profile:=640x480x30 
+ros2 launch realsense2_camera rs_launch.py align_depth.enable:=true depth_module.profile:=640x480x30 rgb_camera.profile:=640x480x30 
 ```
-- #### Start the detection node
+- #### Start the detection node and marker publisher node
 ```bash
-ros2 run devkit_object_detection detection_node
+ros2 run devkit_object_detection obj_detection_node
+ros2 run devkit_object_detection marker_pub_node
 ```
-
+- #### Optionally view the results in RViz
+```bash
+rviz2
+```
 
 
 ## **Example**
 ### Pretrained detection model
 [COCO dataset](https://cocodataset.org/#home) lables for 80 classes of common objects in context
 
-![Result](https://user-images.githubusercontent.com/13176191/212470835-74a13c59-f2f8-48be-8b2e-744d1382ea48.png)
+![Result](https://user-images.githubusercontent.com/13176191/215739174-1a26a478-a781-4b26-8ae7-7c00512f1279.png)
 
 ## Todo
-- [ ] Pointcloud object segmentation
-- [ ] Filter object clusters and publish tf
 - [ ] Add launch file with inference and camera parameters
-
+- [ ] Use local inference model or update to YOLOv8
 
 
 ## **Docker**
