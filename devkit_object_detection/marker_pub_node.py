@@ -89,15 +89,15 @@ def main(args=None):
     rclpy.init(args=args)
 
     # Create the node
-    obj_marker_pub_node = ObjectMarkerPublisher()
+    marker_pub_node = ObjectMarkerPublisher()
 
     # Spin the node so the callback function is called.
-    rclpy.spin(obj_marker_pub_node)
+    rclpy.spin(marker_pub_node)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    obj_marker_pub_node.destroy_node()
+    marker_pub_node.destroy_node()
 
     # Shutdown the ROS client library for Python
     rclpy.shutdown()

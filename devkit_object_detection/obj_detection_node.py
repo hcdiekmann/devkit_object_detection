@@ -119,15 +119,15 @@ def main(args=None):
     rclpy.init(args=args)
 
     # Create the node
-    detection_node = ObjectDetector()
+    obj_detection_node = ObjectDetector()
 
     # Spin the node so the callback function is called.
-    rclpy.spin(detection_node)
+    rclpy.spin(obj_detection_node)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    detection_node.destroy_node()
+    obj_detection_node.destroy_node()
 
     # Shutdown the ROS client library for Python
     rclpy.shutdown()
