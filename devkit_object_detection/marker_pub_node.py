@@ -56,15 +56,15 @@ class ObjectMarkerPublisher(Node):
                     marker = Marker()
                     marker.header.stamp = time_now
                     marker.header.frame_id = obj.frame_id
-                    marker.lifetime = Duration(seconds=0.5).to_msg()
+                    marker.lifetime = Duration(seconds=1).to_msg()
                     marker.type = 2         # set shape, Arrow: 0; Cube: 1 ; Sphere: 2 ; Cylinder: 3
                     marker.id = obj_num
                     
-                    marker.scale.x = 0.01
-                    marker.scale.y = 0.01
-                    marker.scale.z = 0.01
-                    marker.color.r = 0.0
-                    marker.color.g = 1.0
+                    marker.scale.x = 0.05
+                    marker.scale.y = 0.05
+                    marker.scale.z = 0.05
+                    marker.color.r = 1.0
+                    marker.color.g = 0.0
                     marker.color.b = 0.0
                     marker.color.a = obj.confidence
 

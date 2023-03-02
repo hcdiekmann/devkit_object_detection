@@ -32,7 +32,7 @@ class ObjectDetector(Node):
         self.frame_count = 0
 
         # Load and configure YOLO model
-        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5s6')
+        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5n6')
         self.model.iou = 0.45           # NMS IoU threshold
         self.model.conf = 0.40          # NMS confidence threshold
         self.model.multi_label = False  # NMS multiple labels per box
