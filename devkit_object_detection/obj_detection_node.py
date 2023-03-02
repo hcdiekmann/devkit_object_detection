@@ -34,13 +34,13 @@ class ObjectDetector(Node):
         # Load and configure YOLO model
         self.model = torch.hub.load('ultralytics/yolov5', 'yolov5s6')
         self.model.iou = 0.45           # NMS IoU threshold
-        self.model.conf = 0.50          # NMS confidence threshold
+        self.model.conf = 0.40          # NMS confidence threshold
         self.model.multi_label = False  # NMS multiple labels per box
         self.model.classes = [41]       # filter by class, i.e. = [0, 15, 16] for COCO persons, cats and dogs https://github.com/ultralytics/yolov5/blob/master/data/coco.yaml
         self.model.max_det = 50         # maximum number of detections per image
 
         # Create the camera subscribers, Note: The RealSense D405 model publishes rgb_image to /camera/color/image_rect_raw
-        self.color_sub = self.create_subscription(Image,'/camera/color/image_rect', self.color_callback, 10) 
+        self.color_sub = self.create_subscription(Image,'/camera/color/image_raw', self.color_callback, 10) 
         self.depth_sub = self.create_subscription(Image,'/camera/aligned_depth_to_color/image_raw', self.depth_callback, 10)
         
         # Create publishers for the inference_image and object result msg
