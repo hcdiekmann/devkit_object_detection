@@ -46,6 +46,9 @@ class ObjectDetector(Node):
         # Create publishers for the inference_image and object result msg
         self.inference_pub = self.create_publisher(Image, '/camera/inference_image', 10)
         self.object_pub = self.create_publisher(Objects, '/detection/objects', 10)
+        self.get_logger().info(
+                f"Object detector node initialised successfully"
+            )
 
     def color_callback(self, data):
         """
@@ -64,9 +67,9 @@ class ObjectDetector(Node):
         Callback function for the depth frame.
         """
         self.depth_frame = br.imgmsg_to_cv2(data)
-        #depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(ros_depth_frame, alpha=0.08), cv2.COLORMAP_JET)
-        #cv2.imshow('Colormap', depth_colormap)
-        #cv2.waitKey(1)
+        # depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(ros_depth_frame, alpha=0.08), cv2.COLORMAP_JET)
+        # cv2.imshow('Colormap', depth_colormap)
+        # cv2.waitKey(1)
 
 
     def detect(self):
@@ -76,9 +79,9 @@ class ObjectDetector(Node):
             inference_image = np.squeeze(results.render())      # draw bounding boxes, labels and confidence on source image
             ros_infer_image = br.cv2_to_imgmsg(inference_image) # convert to ROS Image msg
             self.inference_pub.publish(ros_infer_image)         # publish inference image to ros topic
-            #results.print()                                    # prints inference metrics to terminal
-            cv2.imshow('Inference Image', inference_image )   
-            cv2.waitKey(1)
+            # results.print()                                    # prints inference metrics to terminal
+            # cv2.imshow('Inference Image', inference_image )   
+            # cv2.waitKey(1)
 
 
     def process_predictions(self, predictions):
