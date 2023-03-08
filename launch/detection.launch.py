@@ -11,5 +11,9 @@ def generate_launch_description():
             package='devkit_object_detection',
             executable='marker_pub_node'
         ),
+    Node(
+            package='devkit_object_detection',
+            executable='amr_positioning_node'
+        ),
 
    ])

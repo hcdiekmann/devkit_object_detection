@@ -24,7 +24,8 @@ setup(
     entry_points={
         'console_scripts': [
 'obj_detection_node = devkit_object_detection.obj_detection_node:main',
-'marker_pub_node = devkit_object_detection.marker_pub_node:main'
+'marker_pub_node = devkit_object_detection.marker_pub_node:main',
+'amr_positioning_node = devkit_object_detection.amr_positioning_node:main'
         ],
     },
 )

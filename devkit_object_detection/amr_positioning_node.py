@@ -24,10 +24,21 @@ class AMRPositioner(Node):
             )
 
     def marker_callback(self, data):
-        print(data)
-        return
+        new_marker = Marker()
+        new_marker = data
 
+        goal_pose = PoseStamped()
+        goal_pose.header = new_marker.header
+        goal_pose.pose = new_marker.pose
+        self.move_to_object_marker(goal_pose)
 
+    def move_to_object_marker(self, pose):
+        self.wander_to_pub.publish(pose)
+
+    def pause_wandering(self, pause):
+        pause_wandering = Bool()
+        pause_wandering.data = True
+        self.pause_wander_pub.publish(pause_wandering)
 
 
 
