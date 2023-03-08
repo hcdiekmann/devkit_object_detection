@@ -6,6 +6,7 @@ from rclpy.duration import Duration
 
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import PoseStamped
+from std_msgs.msg import Bool
 
 
 class AMRPositioner(Node):
@@ -23,6 +24,7 @@ class AMRPositioner(Node):
             )
 
     def marker_callback(self, data):
+        print(data)
         return
 
 
