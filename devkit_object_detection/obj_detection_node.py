@@ -28,7 +28,7 @@ class ObjectDetector(Node):
         self.color_frame = None
         self.depth_frame = None
         self.depth_array = None
-        self.DETECT_FRAME_INTERVAL = 30 # detect every 10 frames to allow CPU processing time for other ROS tasks 
+        self.DETECT_FRAME_INTERVAL = 15 # detect every 10 frames to allow CPU processing time for other ROS tasks 
         self.frame_count = 0
 
         # Load and configure YOLO model

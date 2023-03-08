@@ -24,7 +24,6 @@ class AMRPositioner(Node):
             )
 
     def marker_callback(self, data):
-        new_marker = Marker()
         new_marker = data
 
         goal_pose = PoseStamped()
